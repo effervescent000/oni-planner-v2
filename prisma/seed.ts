@@ -28,6 +28,7 @@ async function seed() {
     data: {
       title: "A test profile",
       userId: user.id,
+      active: true,
     },
   });
 
