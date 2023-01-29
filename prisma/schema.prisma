@@ -33,6 +33,7 @@ model UserProfile {
   user      User     @relation(fields: [userId], references: [id])
   userId    String
   options   Option[]
+  Todo      Todo[]
 }
 
 model Option {
@@ -46,11 +47,12 @@ model Option {
 }
 
 model Todo {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  key       String
-  label     String
-  checked   Boolean  @default(false)
-  hidden    Boolean  @default(false)
+  id            Int         @id @default(autoincrement())
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  key           String
+  checked       Boolean     @default(false)
+  hidden        Boolean     @default(false)
+  profile       UserProfile @relation(fields: [userProfileId], references: [id])
+  userProfileId Int
 }

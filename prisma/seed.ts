@@ -24,20 +24,19 @@ async function seed() {
     },
   });
 
-  await prisma.note.create({
+  const profile = await prisma.userProfile.create({
     data: {
-      title: "My first note",
-      body: "Hello, world!",
+      title: "A test profile",
       userId: user.id,
     },
   });
 
-  await prisma.note.create({
-    data: {
-      title: "My second note",
-      body: "Hello, world!",
-      userId: user.id,
-    },
+  const option = await prisma.option.create({
+    data: { key: "ranching", value: false, userProfileId: profile.id },
+  });
+
+  const todo = await prisma.todo.create({
+    data: { key: "dummy", userProfileId: profile.id },
   });
 
   console.log(`Database has been seeded. 🌱`);
