@@ -30,3 +30,9 @@ export interface RouteType {
   route: string;
   title: string;
 }
+
+export interface IUserProfile {
+  id: number | string;
+  title?: string;
+  active: boolean;
+}

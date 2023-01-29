@@ -2,6 +2,7 @@ import { useMatches } from "@remix-run/react";
 import { useMemo } from "react";
 
 import type { User } from "~/models/user.server";
+import type { IUserProfile } from "./types/interfaces";
 
 const DEFAULT_REDIRECT = "/";
 
@@ -68,4 +69,11 @@ export function useUser(): User {
 
 export function validateEmail(email: unknown): email is string {
   return typeof email === "string" && email.length > 3 && email.includes("@");
+}
+
+export function profileIsValid(profile: unknown): profile is IUserProfile {
+  return (
+    !!(profile as IUserProfile).id &&
+    (profile as IUserProfile).active !== undefined
+  );
 }

@@ -1,3 +1,4 @@
+import { Link } from "@remix-run/react";
 import { useOptionalUser } from "~/utils";
 
 function Todo() {
@@ -6,7 +7,11 @@ function Todo() {
   if (!user) {
     return <div>Please log in to use this feature.</div>;
   }
-  return <div></div>;
+  return (
+    <div>
+      <Link to="/profiles">Set up profiles here.</Link>
+    </div>
+  );
 }
 
 export default Todo;
