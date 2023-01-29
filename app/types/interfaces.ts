@@ -25,3 +25,8 @@ export interface PlannerContextType {
   saveData: {};
   setSaveData: React.Dispatch<React.SetStateAction<SaveDataStructure>>;
 }
+
+export interface RouteType {
+  route: string;
+  title: string;
+}

@@ -16,6 +16,7 @@ import type { GenericObject } from "./types/interfaces";
 
 import tailwindStylesheetUrl from "./styles/tailwind.css";
 import { getUser } from "./session.server";
+import Header from "./components/header";
 
 export const links: LinksFunction = () => {
   return [{ rel: "stylesheet", href: tailwindStylesheetUrl }];
@@ -46,7 +47,8 @@ export default function App() {
           <Meta />
           <Links />
         </head>
-        <body className="h-full">
+        <body className="h-full bg-black text-blue-gray">
+          <Header />
           <Outlet />
           <ScrollRestoration />
           <Scripts />
