@@ -32,8 +32,17 @@ export interface RouteType {
 }
 
 export interface IUserProfile {
-  id: number | string;
+  id: string;
   title?: string;
   active: boolean;
   userId: string;
+}
+
+export interface IOption {
+  label: string;
+  key: string;
+}
+
+export interface ITodo {
+  key: string;
 }
