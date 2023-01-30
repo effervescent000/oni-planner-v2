@@ -73,7 +73,7 @@ export function validateEmail(email: unknown): email is string {
 
 export function profileIsValid(profile: unknown): profile is IUserProfile {
   return (
-    !!(profile as IUserProfile).id &&
+    (profile as IUserProfile).id !== undefined &&
     (profile as IUserProfile).active !== undefined
   );
 }

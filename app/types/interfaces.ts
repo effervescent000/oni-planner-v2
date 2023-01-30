@@ -35,4 +35,5 @@ export interface IUserProfile {
   id: number | string;
   title?: string;
   active: boolean;
+  userId: string;
 }
