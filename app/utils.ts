@@ -1,3 +1,4 @@
+import type { UserProfile } from "@prisma/client";
 import { useMatches } from "@remix-run/react";
 import { useMemo } from "react";
 
@@ -57,6 +58,11 @@ export function useOptionalUser(): User | undefined {
   return data.user;
 }
 
+export function useOptionalProfile(): UserProfile | undefined {
+  const data = useMatchesData("root");
+  if (data && profileIsValid(data.profile)) return data.profile;
+}
+
 export function useUser(): User {
   const maybeUser = useOptionalUser();
   if (!maybeUser) {
@@ -71,7 +77,7 @@ export function validateEmail(email: unknown): email is string {
   return typeof email === "string" && email.length > 3 && email.includes("@");
 }
 
-export function profileIsValid(profile: unknown): profile is IUserProfile {
+export function profileIsValid(profile: unknown): profile is UserProfile {
   return (
     (profile as IUserProfile).id !== undefined &&
     (profile as IUserProfile).active !== undefined
