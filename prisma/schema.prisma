@@ -46,6 +46,8 @@ model Option {
   value         Boolean
   profile       UserProfile @relation(fields: [userProfileId], references: [id])
   userProfileId Int
+
+  @@unique([key, userProfileId])
 }
 
 model Todo {
@@ -57,4 +59,6 @@ model Todo {
   hidden        Boolean     @default(false)
   profile       UserProfile @relation(fields: [userProfileId], references: [id])
   userProfileId Int
+
+  @@unique([key, userProfileId])
 }
