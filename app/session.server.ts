@@ -1,3 +1,4 @@
+import type { UserProfile } from "@prisma/client";
 import { createCookieSessionStorage, redirect } from "@remix-run/node";
 import invariant from "tiny-invariant";
 
@@ -18,6 +19,7 @@ export const sessionStorage = createCookieSessionStorage({
 });
 
 const USER_SESSION_KEY = "userId";
+const ACTIVE_PROFILE_KEY = "activeProfile";
 
 export async function getSession(request: Request) {
   const cookie = request.headers.get("Cookie");
@@ -40,6 +42,13 @@ export async function getUser(request: Request) {
   if (user) return user;
 
   throw await logout(request);
+}
+
+export async function getActiveProfileId(
+  request: Request
+): Promise<UserProfile["id"] | undefined> {
+  const session = await getSession(request);
+  return session.get(ACTIVE_PROFILE_KEY);
 }
 
 export async function requireUserId(
@@ -76,6 +85,30 @@ export async function createUserSession({
 }) {
   const session = await getSession(request);
   session.set(USER_SESSION_KEY, userId);
+  return redirect(redirectTo, {
+    headers: {
+      "Set-Cookie": await sessionStorage.commitSession(session, {
+        maxAge: remember
+          ? 60 * 60 * 24 * 7 // 7 days
+          : undefined,
+      }),
+    },
+  });
+}
+
+export async function createProfileSession({
+  request,
+  profileId,
+  remember,
+  redirectTo,
+}: {
+  request: Request;
+  profileId: number;
+  remember: boolean;
+  redirectTo: string;
+}) {
+  const session = await getSession(request);
+  session.set(ACTIVE_PROFILE_KEY, profileId);
   return redirect(redirectTo, {
     headers: {
       "Set-Cookie": await sessionStorage.commitSession(session, {

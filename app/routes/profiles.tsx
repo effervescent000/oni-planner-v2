@@ -5,6 +5,7 @@ import { Form, useLoaderData } from "@remix-run/react";
 import Button from "~/components/common/button";
 
 import { prisma } from "~/db.server";
+import { createProfileSession } from "~/session.server";
 import type { IUserProfile } from "~/types/interfaces";
 import { profileIsValid, useUser } from "~/utils";
 
@@ -41,7 +42,6 @@ export async function action({ request }: ActionArgs) {
   } as IUserProfile;
   if (profileIsValid(values)) {
     // turn off all active profiles
-    console.log(values.active);
     if (values.active) {
       await turnOffProfiles();
     }
@@ -54,13 +54,25 @@ export async function action({ request }: ActionArgs) {
           userId: body.get("user") as string,
         },
       });
+      createProfileSession({
+        request,
+        profileId: createdUser.id,
+        remember: true,
+        redirectTo: "/",
+      });
       return json(createdUser);
     } else {
       const updatedUser = await prisma.userProfile.update({
-        where: { id: +values.id },
+        where: { id: values.id },
         data: {
           active: values.active,
         },
+      });
+      createProfileSession({
+        request,
+        profileId: updatedUser.id,
+        remember: true,
+        redirectTo: "/",
       });
       return json(updatedUser);
     }

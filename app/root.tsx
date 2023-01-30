@@ -17,6 +17,7 @@ import type { GenericObject } from "./types/interfaces";
 import tailwindStylesheetUrl from "./styles/tailwind.css";
 import { getUser } from "./session.server";
 import Header from "./components/header";
+import { getActiveProfileByUserId } from "./models/userProfile.server";
 
 export const links: LinksFunction = () => {
   return [{ rel: "stylesheet", href: tailwindStylesheetUrl }];
@@ -29,8 +30,11 @@ export const meta: MetaFunction = () => ({
 });
 
 export async function loader({ request }: LoaderArgs) {
+  const user = await getUser(request);
+  if (!user) return json({ user, profile: null });
   return json({
-    user: await getUser(request),
+    user,
+    profile: await getActiveProfileByUserId(user.id),
   });
 }
 
